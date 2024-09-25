@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @EnvironmentObject var dataStore: DataStore
+    @State private var currentDate = Date()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 225))]) {
+                    TimeWidget()
+                    TasksWidget()
+                    SpotifyWidget()
+                    //FocusWidget()
+                    
+                }
+                .padding(.horizontal)
+            }
+            .navigationTitle("Dashboard")
+        }
     }
 }
 
 #Preview {
     DashboardView()
+        .environmentObject(DataStore())
 }
