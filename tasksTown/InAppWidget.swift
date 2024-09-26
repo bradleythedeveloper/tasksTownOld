@@ -1,5 +1,5 @@
 //
-//  Widget.swift
+//  InAppWidget.swift
 //  tasksTown
 //
 //  Created by Bradley Austin on 25/09/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimeWidget: View {
+struct TimeInAppWidget: View {
     var body: some View {
         GroupBox {
             TimelineView(.periodic(
@@ -21,11 +21,11 @@ struct TimeWidget: View {
             Label("Time", systemImage: "clock")
                 .foregroundStyle(.primary)
         }
-        .groupBoxStyle(WidgetGroupBoxStyle())
+        .groupBoxStyle(InAppWidgetGroupBoxStyle())
     }
 }
 
-struct TasksWidget: View {
+struct TasksInAppWidget: View {
     @EnvironmentObject var dataStore: DataStore
     var body: some View {
         GroupBox {
@@ -57,11 +57,11 @@ struct TasksWidget: View {
             Label("Tasks", systemImage: "checklist")
                 .foregroundStyle(.blue)
         }
-        .groupBoxStyle(WidgetGroupBoxStyle())
+        .groupBoxStyle(InAppWidgetGroupBoxStyle())
     }
 }
 
-struct SpotifyWidget: View {
+struct SpotifyInAppWidget: View {
     var body: some View {
         GroupBox {
             VStack(spacing:10) {
@@ -91,6 +91,7 @@ struct SpotifyWidget: View {
                             }
                         }
                         .padding(.trailing,-5)
+                        .buttonStyle(.plain)
                     }
                     .frame(alignment: .trailing)
                     .foregroundStyle(.primary)
@@ -123,11 +124,11 @@ struct SpotifyWidget: View {
             Label("Spotify", systemImage: "music.note")
                 .foregroundStyle(.green)
         }
-        .groupBoxStyle(WidgetGroupBoxStyle())
+        .groupBoxStyle(InAppWidgetGroupBoxStyle())
     }
 }
 
-//struct FocusWidget: View {
+//struct FocusInAppWidget: View {
 //    @State var focusHours = 0
 //    @State var focusMinutes = 0
 //    @State var focusDuration = 0
@@ -154,11 +155,11 @@ struct SpotifyWidget: View {
 //            Label("Focus", systemImage: "moon.fill")
 //                .foregroundStyle(.purple)
 //        }
-//        .groupBoxStyle(WidgetGroupBoxStyle())
+//        .groupBoxStyle(InAppWidgetGroupBoxStyle())
 //    }
 //}
 
-struct WidgetGroupBoxStyle: GroupBoxStyle {
+struct InAppWidgetGroupBoxStyle: GroupBoxStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack(alignment: .leading) {
             configuration.label
@@ -180,9 +181,10 @@ struct WidgetGroupBoxStyle: GroupBoxStyle {
 }
 
 #Preview {
-    VStack {
-        SpotifyWidget()
-        TasksWidget()
+    LazyVGrid(columns: [GridItem(.flexible())]) {
+        SpotifyInAppWidget()
+            //.frame(width: 200, height: 300)
+        TasksInAppWidget()
             .environmentObject(DataStore())
     }
     .padding()

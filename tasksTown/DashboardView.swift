@@ -14,9 +14,9 @@ struct DashboardView: View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 225))]) {
-                    TimeWidget()
-                    TasksWidget()
-                    SpotifyWidget()
+                    TimeInAppWidget()
+                    TasksInAppWidget()
+                    SpotifyInAppWidget()
                     //FocusWidget()
                     
                 }

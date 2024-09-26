@@ -14,5 +14,9 @@ struct tasksTownApp: App {
             ContentView()
                 .environmentObject(DataStore())
         }
+        //.windowResizability(.contentSize)
+        #if os(macOS)
+        .windowStyle(HiddenTitleBarWindowStyle())
+        #endif
     }
 }
