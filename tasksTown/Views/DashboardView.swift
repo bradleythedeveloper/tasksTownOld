@@ -13,7 +13,7 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 225))]) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 250))]) {
                     TimeInAppWidget()
                     TasksInAppWidget()
                     SpotifyInAppWidget()

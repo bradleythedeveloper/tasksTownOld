@@ -41,9 +41,18 @@ struct ContentView: View {
     @State private var isSmallScreen: Bool = false
     @State var selectedView: AppSection? = .dashboard
     @State var selectedTabView: AppSection = .dashboard
+    
+    var tabViewStyle: some TabViewStyle {
+        if #available(iOS 18.0, macOS 15.0, *) {
+            return .sidebarAdaptable
+        } else {
+            return .automatic
+        }
+    }
+    
     var body: some View {
         ZStack {
-            if true {
+            if #available(iOS 18.0, macOS 15.0, *) {
                 TabView(selection:$selectedTabView) {
                     ForEach(AppSection.allCases) { view in
                         AnyView(view.tabView)
@@ -53,15 +62,21 @@ struct ContentView: View {
                             .tag(view)
                     }
                 }
-                //.tabViewStyle(.sidebarAdaptable)
-                .onAppear {
-                    selectedView = selectedTabView
-                    print(selectedView as Any)
+                .tabViewStyle(tabViewStyle)
+                .tabViewSidebarHeader {
+                    Text("tasksTown")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .onChange(of: selectedTabView) {
-                    selectedView = selectedTabView
-                    print(selectedView as Any)
-                }
+//                .onAppear {
+//                    selectedView = selectedTabView
+//                    print(selectedView as Any)
+//                }
+//                .onChange(of: selectedTabView) {
+//                    selectedView = selectedTabView
+//                    print(selectedView as Any)
+//                }
             } else {
                 NavigationSplitView(columnVisibility:$columnVisibility) {
                     List(selection:$selectedView) {
