@@ -39,11 +39,18 @@ struct TasksInAppWidget: View {
                         .foregroundStyle(.primary)
                         .padding(EdgeInsets(top: 0, leading: -1, bottom: 0, trailing: -2))
                         Text("\(task.name.wrappedValue)")
+                        Spacer()
+                        HStack {
+                            //Image(systemName: "paintpalette.fill")
+                            Image(systemName: task.wrappedValue.color.icon)
+                            Text("\(task.color.wrappedValue.rawValue.localizedCapitalized)")
+                        }
+                        .foregroundStyle(task.color.wrappedValue.color.gradient)
                     }
                 }
                 //.padding(.vertical,5)
                 Spacer()
-                LazyHGrid(rows:[GridItem(.flexible())],spacing: 5) {
+                VStack(alignment:.leading, spacing: 5) {
                     Button("Add Task", systemImage: "plus") {}
                         .foregroundStyle(.white)
                         .buttonStyle(.borderedProminent)
@@ -164,13 +171,15 @@ struct InAppWidgetGroupBoxStyle: GroupBoxStyle {
         VStack(alignment: .leading) {
             configuration.label
                 .font(.headline)
-            VStack{
-                //Spacer(minLength: 0)
+            VStack {
+                Spacer(minLength: 1)
                 configuration.content
+                Spacer(minLength: 1)
             }
             .safeAreaPadding()
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.gray.gradient.opacity(0.4))
+            //.background(Color.gray.gradient.opacity(0.4))
+            .background(.ultraThickMaterial)
             .cornerRadius(10)
         }
         .safeAreaPadding(.vertical,5)

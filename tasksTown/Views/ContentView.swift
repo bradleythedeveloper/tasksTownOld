@@ -43,7 +43,7 @@ struct ContentView: View {
     @State var selectedTabView: AppSection = .dashboard
     var body: some View {
         ZStack {
-            if horizontalSizeClass == .compact {
+            if true {
                 TabView(selection:$selectedTabView) {
                     ForEach(AppSection.allCases) { view in
                         AnyView(view.tabView)
@@ -53,6 +53,7 @@ struct ContentView: View {
                             .tag(view)
                     }
                 }
+                //.tabViewStyle(.sidebarAdaptable)
                 .onAppear {
                     selectedView = selectedTabView
                     print(selectedView as Any)
@@ -142,7 +143,8 @@ struct ContentView: View {
                     }
                 }
             }
-            SearchView()
+            //SearchView()
+            AddView()
         }
     }
 }

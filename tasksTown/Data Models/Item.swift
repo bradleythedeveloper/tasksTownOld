@@ -1,51 +1,52 @@
 //
-//  Task.swift
+//  Item.swift
 //  tasksTown
 //
-//  Created by Bradley Austin on 25/09/2024.
+//  Created by Bradley Austin on 28/09/2024.
 //
 
 import Foundation
 import SwiftData
 import SwiftUI
 
-class Task: Identifiable, Hashable {
-    var name: String
-    var dueDate: Date?
+class Item: Identifiable, Hashable {
     var id = UUID().uuidString
+    var name: String
+    var description = ""
+    var dueDate: Date?
     var isComplete = false
-    var isFocused = false
-    var dateType: TaskDateType
+    var dateType: ItemDateType
     var dateTypePrint = ""
-    var color: TaskColor
+    var color: ItemColor
     var tag: Tag?
-    init(name:String,dueDate:Date,dateType:TaskDateType,color:TaskColor = .none) {
+    init(name:String,dueDate:Date,dateType:ItemDateType,color:ItemColor = .none) {
         self.name = name
         self.dueDate = dueDate
         self.dateType = dateType
         self.color = color
     }
-    init(name:String,taskColour:TaskColor = .none) {
+    init(name:String,color:ItemColor = .none) {
         self.name = name
         self.dateType = .noDate
         self.dateTypePrint = "No Date"
-        self.color = taskColour
+        self.color = color
     }
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
     }
-    static func ==(lhs: Task, rhs: Task) -> Bool {
+    static func ==(lhs: Item, rhs: Item) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-enum TaskDateType: String {
+enum ItemDateType: String, CaseIterable, Identifiable {
     case due = "Due"
     case completeBy = "Complete By"
     case noDate = "No Date"
+    var id: Self { self }
 }
 
-enum TaskColor: String, CaseIterable, Identifiable {
+enum ItemColor: String, CaseIterable, Identifiable {
     case red
     case yellow
     case green

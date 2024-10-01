@@ -139,7 +139,7 @@ struct JournalView: View {
                                 }
                                 Spacer()
                                 Menu {
-                                    ForEach(TaskColor.allCases) { color in
+                                    ForEach(ItemColor.allCases) { color in
                                         Button {
                                             task.color.wrappedValue = color
                                         } label: {
@@ -199,19 +199,19 @@ struct JournalView: View {
                                 .fill(Color.gray.gradient)
                         )
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: .infinity, height: 200)
+                            //.frame(width: .infinity, height: 200)
                             .foregroundStyle(.gray)
                             .overlay(
                                 Text("Picture")
                             )
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: .infinity, height: 200)
+                            //.frame(width: .infinity, height: 200)
                             .foregroundStyle(.gray)
                             .overlay(
                                 ZStack {
                                     Text("Video")
                                     RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: .infinity, height: 200)
+                                        //.frame(width: .infinity, height: 200)
                                         .foregroundStyle(
                                             LinearGradient(stops: [
                                                 Gradient.Stop(color: .clear, location: 0.65),
