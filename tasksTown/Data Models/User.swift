@@ -16,8 +16,7 @@ class User: Identifiable, Hashable {
     var lastName: String
     var email: String
     var password: String
-//    let createdAt: Date
-//    let updatedAt: Date
+    var townCash: Int = 0
     init (id: String, username: String, firstName: String, lastName: String, email: String, password: String) {
         self.id = id
         self.username = username
@@ -28,7 +27,7 @@ class User: Identifiable, Hashable {
         
     }
     func hash(into hasher: inout Hasher) {
-            hasher.combine(self.id)
+        hasher.combine(self.id)
     }
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.id == rhs.id

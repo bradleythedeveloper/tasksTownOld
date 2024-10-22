@@ -7,31 +7,6 @@
 
 import SwiftUI
 
-//struct ContentView: View {
-//    var body: some View {
-//        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//            Text("Hello, world!")
-//        }
-//        .padding()
-//        TabView {
-//            Text("Hello, world!")
-//                .tabItem {
-//                    Label("Dashboard", systemImage: "globe")
-//                }
-//        }
-//        NavigationSplitView {
-//            
-//        } content: {
-//            
-//        } detail: {
-//            
-//        }
-//    }
-//}
-
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.colorScheme) var colorScheme
@@ -41,6 +16,7 @@ struct ContentView: View {
     @State private var isSmallScreen: Bool = false
     @State var selectedView: AppSection? = .dashboard
     @State var selectedTabView: AppSection = .dashboard
+    @State var showAddItemSheet: Bool = false
     
     var tabViewStyle: some TabViewStyle {
         if #available(iOS 18.0, macOS 15.0, *) {
@@ -159,7 +135,11 @@ struct ContentView: View {
                 }
             }
             //SearchView()
-            AddView()
+            AddItemButton(showAddItemSheet: $showAddItemSheet)
+        }
+        .sheet(isPresented: $showAddItemSheet) {
+            AddItemView()
+                .presentationDetents([.fraction(0.75),.large])
         }
     }
 }

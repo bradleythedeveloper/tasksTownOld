@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddView: View {
+struct AddViewOld: View {
     @EnvironmentObject var dataStore: DataStore
     @State var isFocused: Bool = true
     @State var paddingBottom: CGFloat = 55
@@ -163,5 +163,5 @@ enum DisclosureGroupType {
 }
 
 #Preview {
-    AddView(showAddView: true)
+    AddViewOld(showAddView: true)
 }

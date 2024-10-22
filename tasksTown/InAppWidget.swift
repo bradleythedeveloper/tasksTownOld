@@ -73,7 +73,7 @@ struct SpotifyInAppWidget: View {
         GroupBox {
             VStack(spacing:10) {
                 HStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 5)
                         .frame(width: 100, height: 100)
                         .overlay {
                             Image(systemName: "music.note")
@@ -108,7 +108,7 @@ struct SpotifyInAppWidget: View {
                     HStack {
                         ForEach(1..<4) { index in
                             VStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 10)
+                                RoundedRectangle(cornerRadius: 5)
                                     .frame(width: 70, height: 70)
                                     .overlay {
                                         Image(systemName: "music.note")
@@ -180,7 +180,7 @@ struct InAppWidgetGroupBoxStyle: GroupBoxStyle {
             .frame(maxWidth: .infinity, alignment: .leading)
             //.background(Color.gray.gradient.opacity(0.4))
             .background(.ultraThickMaterial)
-            .cornerRadius(10)
+            .cornerRadius(5)
         }
         .safeAreaPadding(.vertical,5)
         .frame(maxWidth: .infinity, alignment: .leading)

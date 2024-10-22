@@ -7,246 +7,266 @@ struct JournalView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack {
-                    // MARK: TagSelectorView
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach($dataStore.tags, id: \.id) { tag in
-                                Button {
-                                    tag.isEditing.wrappedValue.toggle()
-                                } label: {
-                                    Text("\(tag.name.wrappedValue)")
-                                        .foregroundStyle(.white)
-                                        .padding()
-                                        .padding(.vertical,-5)
-                                        .background(
-                                            Capsule()
-                                                .fill(tag.color.wrappedValue.gradient)
-                                        )
-                                    
-                                }
-                                .popover(isPresented: tag.isEditing,
-                                         //attachmentAnchor: .point(.bottom),
-                                         //arrowEdge: .trailing,
-                                         content: {
-                                    VStack {
-                                        TextField("Enter a name", text: tag.name, axis: .horizontal)
-                                            .font(.title)
-                                            .fontWeight(.bold)
-                                        Text("Tap to edit name")
-                                            .font(.caption)
-                                            .frame(maxWidth:.infinity,alignment: .leading)
-                                            .padding(.top,-10)
-                                        ColorPicker("Tag Colour", selection: tag.color)
-                                        Button("Delete Task", role: .destructive) {
-                                            if let index = dataStore.tags.firstIndex(of: tag.wrappedValue) {
-                                                dataStore.tags.remove(at: index)
-                                            }
-                                        }
-                                        .frame(maxWidth:.infinity,alignment: .leading)
-                                    }
-                                    .padding()
-                                    .frame(maxWidth:.infinity,alignment: .leading)
-                                    .presentationCompactAdaptation(.popover)
-                                })
-                            }
-                            Button {
-                                
-                            } label: {
-                                Label("Add Tag",systemImage: "plus")
-                                    .foregroundStyle(.white)
-                                    .padding()
-                                    .padding(.vertical,-5)
-                                    .background(
-                                        Capsule()
-                                            .fill(.blue.gradient)
-                                    )
-                            }
-                            .popover(isPresented: .constant(false), content: {
-                                VStack {
-                                    //                                    TextField("Enter a name", text: tag.name, axis: .horizontal)
-                                    //                                        .font(.title)
-                                    //                                        .fontWeight(.bold)
-                                    //                                    Text("Tap to edit name")
-                                    //                                        .font(.caption)
-                                    //                                        .frame(maxWidth:.infinity,alignment: .leading)
-                                    //                                        .padding(.top,-10)
-                                    //                                    ColorPicker("Tag Colour", selection: tag.color)
-                                    //                                    Button("Delete Task", role: .destructive) {
-                                    //                                        if let index = dataStore.tags.firstIndex(of: tag.wrappedValue) {
-                                    //                                            dataStore.tags.remove(at: index)
-                                    //                                        }
-                                    //                                    }
-                                    //                                    .frame(maxWidth:.infinity,alignment: .leading)
-                                }
-                                .padding()
-                                .frame(maxWidth:.infinity,alignment: .leading)
-                                .presentationCompactAdaptation(.popover)
-                            })
-                        }
-                        .frame(maxWidth: .infinity, alignment:.leading)
-                        .padding(.bottom)
-                        .padding(.horizontal)
-                    }
-                    .scrollIndicators(.never)
-                    // MARK: Main View
-                    Group {
-                        Text("Tasks & Events")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .frame(maxWidth:.infinity,alignment: .leading)
-                        HStack {
-                            Text("For Today")
-                            Button("Show All Tasks & Events") {
-                                
-                            }
-                            Spacer()
-                        }
-                        ForEach($dataStore.tasks) { task in
-                            HStack(spacing:5) {
-                                Toggle(isOn: task.isComplete) {
-                                    Image(systemName: "circle")
-                                }
-                                .toggleStyle(CheckboxToggleStyle())
-                                .padding(0)
-                                VStack(alignment:.leading,spacing: 2) {
-                                    TextField("Enter a task", text: task.name)
-                                        .focused($focusedTaskID, equals: task.id)
-                                        .onChange(of: focusedTaskID) {
-                                            //let isFocused = focusedTaskID == task.id
-                                            //let showDate = isFocused
-                                        }
-                                        .padding(.trailing,5)
-                                    Menu {
-                                        Menu("Due On") {
-                                            Button("Test"){
-                                                
-                                            }
-                                        }
-                                    } label: {
-                                        HStack(spacing:4) {
-                                            Image(systemName: "calendar")
-                                            //Text("\(task.dateTypePrint.wrappedValue) \(task.dueDate.wrappedValue == nil ? "" : "\(task.dueDate.wrappedValue!)")")
-                                            Text(formattedDueDate(task))
-                                                .onAppear{
-                                                    task.dateTypePrint.wrappedValue = createDateTypePrint(task: task)
-                                                }
-                                                .onChange(of: task.dueDate.wrappedValue) {
-                                                    task.dateTypePrint.wrappedValue = createDateTypePrint(task: task)
-                                                }
-                                        }
-                                    }
-                                }
-                                Spacer()
-                                Menu {
-                                    ForEach(ItemColor.allCases) { color in
+                HStack {
+                    ScrollView {
+                        VStack {
+                            // MARK: TagSelectorView
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach($dataStore.tags, id: \.id) { tag in
                                         Button {
-                                            task.color.wrappedValue = color
+                                            tag.isEditing.wrappedValue.toggle()
+                                        } label: {
+                                            Label("\(tag.name.wrappedValue)", systemImage: "tag.fill")
+                                                .foregroundStyle(.primary)
+                                                .padding(.horizontal, 10)
+                                                .padding(.vertical, 5)
+                                            //.padding(.vertical,-10)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 5)
+                                                    //.fill(tag.color.wrappedValue)
+                                                        .fill(.ultraThickMaterial)
+                                                )
+                                            
+                                        }
+                                        .popover(isPresented: tag.isEditing,
+                                                 //attachmentAnchor: .point(.bottom),
+                                                 //arrowEdge: .trailing,
+                                                 content: {
+                                            VStack {
+                                                TextField("Enter a name", text: tag.name, axis: .horizontal)
+                                                    .font(.title)
+                                                    .fontWeight(.bold)
+                                                Text("Tap to edit name")
+                                                    .font(.caption)
+                                                    .frame(maxWidth:.infinity,alignment: .leading)
+                                                    .padding(.top,-10)
+                                                ColorPicker("Tag Colour", selection: tag.color)
+                                                Button("Delete Task", role: .destructive) {
+                                                    if let index = dataStore.tags.firstIndex(of: tag.wrappedValue) {
+                                                        dataStore.tags.remove(at: index)
+                                                    }
+                                                }
+                                                .frame(maxWidth:.infinity,alignment: .leading)
+                                            }
+                                            .padding()
+                                            .frame(maxWidth:.infinity,alignment: .leading)
+                                            .presentationCompactAdaptation(.popover)
+                                        })
+                                    }
+                                    Button {
+                                        
+                                    } label: {
+                                        Label("Add Tag",systemImage: "plus")
+                                            .foregroundStyle(.white)
+                                            .padding(.horizontal, 10)
+                                            .padding(.vertical, 5)
+                                        //.padding(.vertical,-10)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 5)
+                                                //.fill(tag.color.wrappedValue)
+                                                    .fill(.blue.gradient)
+                                            )
+                                    }
+                                    .popover(isPresented: .constant(false), content: {
+                                        VStack {
+                                            //                                    TextField("Enter a name", text: tag.name, axis: .horizontal)
+                                            //                                        .font(.title)
+                                            //                                        .fontWeight(.bold)
+                                            //                                    Text("Tap to edit name")
+                                            //                                        .font(.caption)
+                                            //                                        .frame(maxWidth:.infinity,alignment: .leading)
+                                            //                                        .padding(.top,-10)
+                                            //                                    ColorPicker("Tag Colour", selection: tag.color)
+                                            //                                    Button("Delete Task", role: .destructive) {
+                                            //                                        if let index = dataStore.tags.firstIndex(of: tag.wrappedValue) {
+                                            //                                            dataStore.tags.remove(at: index)
+                                            //                                        }
+                                            //                                    }
+                                            //                                    .frame(maxWidth:.infinity,alignment: .leading)
+                                        }
+                                        .padding()
+                                        .frame(maxWidth:.infinity,alignment: .leading)
+                                        .presentationCompactAdaptation(.popover)
+                                    })
+                                }
+                                .frame(maxWidth: .infinity, alignment:.leading)
+                                .padding(.bottom)
+                                .padding(.horizontal)
+                            }
+                            .scrollIndicators(.never)
+                            // MARK: Main View
+                            Group {
+                                Text("Tasks & Events")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth:.infinity,alignment: .leading)
+                                HStack {
+                                    Text("For Today")
+                                    Button("Show All Tasks & Events") {
+                                        
+                                    }
+                                    Spacer()
+                                }
+                                ForEach($dataStore.tasks) { task in
+                                    HStack(spacing:5) {
+                                        Toggle(isOn: task.isComplete) {
+                                            Image(systemName: "circle")
+                                        }
+                                        .toggleStyle(CheckboxToggleStyle())
+                                        .padding(0)
+                                        VStack(alignment:.leading,spacing: 2) {
+                                            TextField("Enter a task", text: task.name)
+                                                .focused($focusedTaskID, equals: task.id)
+                                                .onChange(of: focusedTaskID) {
+                                                    //let isFocused = focusedTaskID == task.id
+                                                    //let showDate = isFocused
+                                                }
+                                                .padding(.trailing,5)
+                                            Menu {
+                                                Menu("Due On") {
+                                                    Button("Test"){
+                                                        
+                                                    }
+                                                }
+                                            } label: {
+                                                HStack(spacing:4) {
+                                                    Image(systemName: "calendar")
+                                                    //Text("\(task.dateTypePrint.wrappedValue) \(task.dueDate.wrappedValue == nil ? "" : "\(task.dueDate.wrappedValue!)")")
+                                                    Text(formattedDueDate(task))
+                                                        .onAppear{
+                                                            task.dateTypePrint.wrappedValue = createDateTypePrint(task: task)
+                                                        }
+                                                        .onChange(of: task.dueDate.wrappedValue) {
+                                                            task.dateTypePrint.wrappedValue = createDateTypePrint(task: task)
+                                                        }
+                                                }
+                                            }
+                                        }
+                                        Spacer()
+                                        Menu {
+                                            ForEach(ItemColor.allCases) { color in
+                                                Button {
+                                                    task.color.wrappedValue = color
+                                                } label: {
+                                                    HStack {
+                                                        Label(color.name, systemImage: color.icon)
+                                                        //Image(systemName: "circle.fill").foregroundStyle(color.color)
+                                                    }
+                                                }
+                                            }
+                                            
                                         } label: {
                                             HStack {
-                                                Label(color.name, systemImage: color.icon)
-                                                //Image(systemName: "circle.fill").foregroundStyle(color.color)
+                                                //Image(systemName: "paintpalette.fill")
+                                                Image(systemName: task.wrappedValue.color.icon)
+                                                Text("\(task.color.wrappedValue.rawValue.localizedCapitalized)")
                                             }
+                                            .foregroundStyle(Color.white)
+                                            //.padding()
+                                            .padding(.vertical,10)
+                                            .frame(width: 100)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 5)
+                                                    .fill(task.color.wrappedValue.color.gradient.opacity(0.7))
+                                            )
                                         }
                                     }
-                                    
-                                } label: {
-                                    HStack {
-                                        //Image(systemName: "paintpalette.fill")
-                                        Image(systemName: task.wrappedValue.color.icon)
-                                        Text("\(task.color.wrappedValue.rawValue.localizedCapitalized)")
+                                }
+                                Text("Library")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth:.infinity,alignment: .leading)
+                                HStack {
+                                    Text("For Today")
+                                    Button("Show All Items in Library") {
+                                        
                                     }
-                                    .foregroundStyle(Color.white)
-                                    .padding()
-                                    .padding(.vertical,-5)
-                                    .background(
-                                        Capsule()
-                                            .fill(task.color.wrappedValue.color.gradient.opacity(0.7))
+                                    Spacer()
+                                }
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text("Website 1")
+                                            .font(.headline)
+                                        Text("Website1.com")
+                                    }
+                                    Spacer()
+                                    Button {
+                                        
+                                    } label: {
+                                        Image(systemName: "safari")
+                                    }
+                                    .foregroundStyle(.white)
+                                }
+                                .frame(maxWidth:.infinity,alignment: .leading)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .fill(Color.gray.gradient)
+                                )
+                                RoundedRectangle(cornerRadius: 5)
+                                    .frame(height: 200)
+                                    .foregroundStyle(.gray)
+                                    .overlay(
+                                        Text("Picture")
                                     )
-                                }
-                            }
-                        }
-                        Text("Library")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .frame(maxWidth:.infinity,alignment: .leading)
-                        HStack {
-                            Text("For Today")
-                            Button("Show All Items in Library") {
-                                
-                            }
-                            Spacer()
-                        }
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Website 1")
-                                    .font(.headline)
-                                Text("Website1.com")
-                            }
-                            Spacer()
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: "safari")
-                            }
-                            .foregroundStyle(.white)
-                        }
-                        .frame(maxWidth:.infinity,alignment: .leading)
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.gray.gradient)
-                        )
-                        RoundedRectangle(cornerRadius: 10)
-                            //.frame(width: .infinity, height: 200)
-                            .foregroundStyle(.gray)
-                            .overlay(
-                                Text("Picture")
-                            )
-                        RoundedRectangle(cornerRadius: 10)
-                            //.frame(width: .infinity, height: 200)
-                            .foregroundStyle(.gray)
-                            .overlay(
-                                ZStack {
-                                    Text("Video")
-                                    RoundedRectangle(cornerRadius: 10)
-                                        //.frame(width: .infinity, height: 200)
-                                        .foregroundStyle(
-                                            LinearGradient(stops: [
-                                                Gradient.Stop(color: .clear, location: 0.65),
-                                                Gradient.Stop(color: .black.opacity(0.5), location: 0.95),
-                                            ], startPoint: .top, endPoint: .bottom)
-                                        )
-                                    VStack(alignment:.leading) {
-                                        Spacer()
-                                        HStack {
-                                            Text("Video 1")
-                                                .font(.headline)
-                                                .fontWeight(.semibold)
-                                            Spacer()
-                                            Image(systemName: "play.fill")
+                                RoundedRectangle(cornerRadius: 5)
+                                    .frame(height: 200)
+                                    .foregroundStyle(.gray)
+                                    .overlay(
+                                        ZStack {
+                                            Text("Video")
+                                            RoundedRectangle(cornerRadius: 5)
+                                            //.frame(width: .infinity, height: 200)
+                                                .foregroundStyle(
+                                                    LinearGradient(stops: [
+                                                        Gradient.Stop(color: .clear, location: 0.65),
+                                                        Gradient.Stop(color: .black.opacity(0.5), location: 0.95),
+                                                    ], startPoint: .top, endPoint: .bottom)
+                                                )
+                                            VStack(alignment:.leading) {
+                                                Spacer()
+                                                HStack {
+                                                    Text("Video 1")
+                                                        .font(.headline)
+                                                        .fontWeight(.semibold)
+                                                    Spacer()
+                                                    Image(systemName: "play.fill")
+                                                }
+                                                .foregroundStyle(.white)
+                                            }
+                                            .frame(maxWidth: .infinity,alignment: .leading)
+                                            .padding()
                                         }
-                                        .foregroundStyle(.white)
-                                    }
-                                    .frame(maxWidth: .infinity,alignment: .leading)
-                                    .padding()
-                                }
-                            )
+                                    )
+                            }
+                            .padding(.horizontal)
+                        }
                     }
-                    .padding(.horizontal)
+    //                HStack {
+    //                    ScrollView {
+    //                        Text("Hello")
+    //                    }
+    //                }
                 }
             }
             .navigationTitle("Journal")
+            .overlay {
+                if true {
+                    ContentUnavailableView(
+                        "You've reached Journal Zero!",
+                        systemImage: "checkmark.seal.fill",
+                        description: Text("Give yourself a pat on the back for your hard work today 🎉")
+                    )
+                    .background {
+                        Rectangle()
+                            .fill(Color.white)
+                            .ignoresSafeArea()
+                    }
+                }
+            }
         }
-//        .searchable(text: $searchQuery) {
-//            NavigationLink {
-//                Text("Hello")
-//            } label: {
-//                Text("Hello")
-//            }
-//
-//        }
     }
 }
 

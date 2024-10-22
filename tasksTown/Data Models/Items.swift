@@ -19,11 +19,30 @@ class Event: Item {
 
 class Link: Item {
     var url: String = ""
-    var linkType: LinkType = .website
+    var linkType: LinkType = LinkType.website
+    init(name: String, dueDate: Date, color: ItemColor = .none, url: String, linkType: LinkType) {
+        super.init(
+            name: name,
+            dueDate: dueDate,
+            dateType: .due,
+            color: color
+        )
+        self.url = url
+        self.linkType = linkType
+    }
 }
 
 class Photo: Item {
     var image: Image?
+    init(name: String, dueDate: Date, color: ItemColor = .none, image: Image?) {
+        super.init(
+            name: name,
+            dueDate: dueDate,
+            dateType: .due,
+            color: color
+        )
+        self.image = image
+    }
 }
 
 enum LinkType: String, CaseIterable, Identifiable {
