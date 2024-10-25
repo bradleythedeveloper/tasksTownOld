@@ -6,8 +6,7 @@
 //
 
 import Foundation
-import SwiftData
-import SwiftUI
+import GRDB
 
 class User: Identifiable, Hashable {
     var id: String
